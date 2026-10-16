@@ -1,106 +1,134 @@
-# TiranaEats Project Requirements Answer
+# TiranaEats Food Delivery E-Commerce Prototype
 
-## 1. Business Concept and Model
+TiranaEats is a university project prototype for a B2C food delivery platform in Tirana. It simulates a real digital business with restaurant browsing, cart management, checkout, authentication, order status updates, and analytics.
 
-TiranaEats is a **B2C e-commerce food delivery platform** for customers in Tirana. The platform connects customers with local restaurants and allows them to browse menus, add food items to a cart, complete checkout, and follow the order status.
+## Business Concept
 
-The value proposition is to make food ordering fast, simple, and reliable. Customers can compare restaurants, search by restaurant or cuisine, view menu items, simulate secure payment, and track orders from checkout to delivery.
+- **Business type:** B2C food delivery website
+- **Target audience:** People ordering food online in Tirana
+- **Value proposition:** Fast, simple, reliable ordering with simulated real-time order tracking
+- **Revenue model:** 15% commission per simulated order
+- **Transaction flow:** Browsing -> selecting products -> cart -> checkout -> simulated payment -> manager/admin status updates
 
-The target audience is people living, studying, or working in Tirana who want convenient online food delivery from local restaurants.
+## Project Structure
 
-The revenue model is a **commission-based model**. TiranaEats earns a simulated **15% commission** from each order. The platform could also grow later with promoted restaurant listings, delivery fees, subscription plans for restaurants, and digital advertising.
+```text
+/frontend              React + Vite + Tailwind website
+/backend               Node.js + Express API
+/backend/data          JSON mock data for users, restaurants, menu items, orders
+```
 
-## 2. E-Commerce Platform
+## Features
 
-The project includes a functional website built with **React, Vite, and Tailwind CSS** for the frontend, and **Node.js with Express** for the backend API.
+- Restaurant homepage with search and cuisine filters
+- Restaurant detail pages with menu products
+- Customer restaurant reviews with star ratings, comments, and delete controls for review owners/admin
+- OpenStreetMap integration for restaurant locations and delivery address lookup
+- Persistent cart using `localStorage`
+- Add, remove, and update cart item quantities
+- Checkout with simulated payment method
+- Smart scheduling for later delivery, including quick lunch scheduling at 12:30
+- Rewards system where customers earn points per order and redeem them for discounts, free delivery, or a free meal reward
+- Simulated payment options: Visa/Mastercard card, PayPal, and cash on delivery
+- Advanced payment simulation:
+  - Card, cash, PayPal, and digital wallet payments
+  - Split payments between users
+  - Promo codes: `FOOD10`, `LUNCH20`, and `WALLET5`
+  - Cashback balance for wallet cashback promotions
+- Login/register with JWT session simulation
+- Extra security verification code for admin and restaurant manager login
+- Protected customer, admin, and restaurant routes
+- Notification center for customers, admins, and restaurant managers
+- Customer profile with personal order history button and order summary
+- Customer profile shows available reward points
+- Budget and nutrition tracking for customers:
+  - Monthly food spending
+  - Configurable monthly food budget
+  - Approximate calories for menu items and each order
+- Orders page with auto-refreshing status updates after manager/admin changes
+- Customers can cancel orders while they are `pending`; `preparing`, `delivering`, and `delivered` orders cannot be cancelled
+- 5-minute courier map simulation appears after the order is marked as `delivering`; after 5 minutes the backend automatically marks it `delivered`
+- Admin Dashboard with simulated KPIs:
+  - Number of orders
+  - Commission revenue
+  - Conversion rate
+  - Visitors
+  - Checkout starts
+  - Average order value
+- Restaurant Dashboard for managing order statuses manually
+- Login page demo buttons for client, restaurant manager, and admin access
+- Restaurant managers can choose which restaurant they manage during login
+- New immediate orders start as `pending`; scheduled orders start as `scheduled` and automatically become `pending` at the selected time
+- Admin or restaurant manager changes active orders to `preparing`, `delivering`, and `delivered`
+- Responsive modern food delivery UI
 
-The platform includes:
+## Demo Accounts
 
-- A homepage with restaurant listings, search, and cuisine filtering.
-- Restaurant detail pages with food/menu products, descriptions, images, calories, prices, reviews, and location map.
-- Shopping cart functionality using `localStorage`, so cart items stay available while browsing.
-- Cart controls for adding, removing, and updating item quantities.
-- Checkout page with delivery details, rewards, promo codes, payment methods, order scheduling, and final total.
-- Currency conversion display for Albanian lek, euro, US dollar, and British pound.
-- Customer, restaurant manager, and admin areas.
+```text
+Customer: arta@example.com / password123
+Admin: admin@example.com / admin123 / security code ADMIN-2026
+Restaurant manager: manager@example.com / manager123 / security code MANAGER-2026
+```
 
-## 3. Transaction Process & Payment System
+On the login page, use the demo role buttons to fill the account details. Admin and manager login requires the extra security verification code. When you choose **Login as manager**, select the restaurant from the dropdown before logging in.
 
-The customer journey starts on the homepage, where the customer browses restaurants or searches by cuisine/name. After choosing a restaurant, the customer opens the restaurant page, views menu items, and adds products to the cart. In the cart, the customer can change quantities, remove items, apply rewards or promo codes, choose delivery details, select a payment method, and confirm the order.
+Because authentication uses browser `sessionStorage`, you can open different browser tabs and log in with different accounts at the same time. This is useful for demos: keep one tab as the customer and another tab as admin or restaurant manager to watch order status updates live.
 
-After checkout, the order appears in the order history page. The order can be `pending`, `scheduled`, `preparing`, `delivering`, `delivered`, or `cancelled`. Restaurant managers or admins can update the order status from the restaurant dashboard. Customers can cancel orders only while they are still pending or scheduled.
+## Run The Project
 
-The payment methods used in the prototype are:
+Install backend dependencies:
 
-- Credit / debit card simulation
-- PayPal simulation
-- Digital wallet simulation
-- Cash on delivery
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-The app supports promo codes and wallet cashback.
+The backend runs at:
 
-A real payment gateway works as a secure middle layer between the customer, the e-commerce website, the bank/card network, and the merchant. It encrypts the payment information, checks that the payment details are valid, asks the bank or payment provider to approve the transaction, and returns a success or failure response to the website. In this project, the payment gateway is simulated for academic purposes, so no real money is charged.
+```text
+http://localhost:4000
+```
 
-## 4. Security and Legal Considerations
+Install frontend dependencies in a second terminal:
 
-The project includes basic security ideas suitable for a prototype. Authentication is simulated with JWT-based login, and protected routes are used so customers, admins, and restaurant managers only access the pages allowed for their roles. Admin and restaurant manager accounts also require an extra security verification code during login.
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Card details are simulated and not connected to a real bank. In a real production system, sensitive card data should never be stored directly by the website. It should be handled by a certified payment provider.
+The website runs at:
 
-For privacy and data protection, the platform should collect only the information needed to complete orders, such as name, phone number, address, and payment method. User data should be protected, access should be role-based, and customers should be informed about how their personal data is used.
+```text
+http://localhost:5173
+```
 
-Important legal and ethical considerations include:
+## API Overview
 
-- Clear terms and conditions for customers and restaurants.
-- Privacy policy explaining how customer data is collected and used.
-- Refund and cancellation rules.
-- Food safety responsibility and restaurant accountability.
-- Honest pricing, delivery fees, discounts, and advertising.
-- Secure communication through HTTPS/SSL in a real deployment.
+- `POST /api/auth/login`
+- `POST /api/auth/register`
+- `GET /api/restaurants`
+- `GET /api/restaurants/:id`
+- `GET /api/menu-items`
+- `GET /api/orders`
+- `POST /api/orders`
+- `PATCH /api/orders/:id/cancel`
+- `GET /api/rewards`
+- `GET /api/payment-options`
+- `GET /api/notifications`
+- `PATCH /api/notifications/read`
+- `GET /api/analytics`
+- `GET /api/restaurant/orders`
+- `PATCH /api/restaurant/orders/:id/status`
 
-## 5. Digital Marketing Strategy
+## Mock Data
 
-The customer acquisition strategy for TiranaEats would focus on people in Tirana who regularly order lunch, dinner, or quick meals online. The platform could attract customers through student discounts, first-order promo codes, restaurant partnerships, referral rewards, and local social media campaigns.
+The API uses JSON files from `/backend/data`:
 
-SEO can be used by creating pages for popular searches such as "food delivery Tirana", "pizza delivery Tirana", "healthy lunch Tirana", or restaurant-specific pages. Social media marketing on Instagram, TikTok, and Facebook could show food photos, short videos, discount campaigns, and restaurant recommendations.
+- `users.json`
+- `restaurants.json`
+- `menuItems.json`
+- `orders.json`
 
-Paid ads could target users near restaurant areas, universities, offices, and residential neighborhoods. Promo codes such as `FOOD10`, `LUNCH20`, and wallet cashback campaigns can encourage checkout completion.
-
-The sales funnel is:
-
-1. Awareness: customer sees social media content, ad, or search result.
-2. Interest: customer opens TiranaEats and browses restaurants.
-3. Consideration: customer compares menus, prices, reviews, delivery time, and payment options.
-4. Conversion: customer adds items to cart and completes checkout.
-5. Retention: customer receives rewards, cashback, notifications, and order history for repeat purchases.
-
-## 6. Analytics and KPIs
-
-The admin dashboard includes simulated analytics for measuring business performance. Important KPIs for TiranaEats include:
-
-- **Number of orders:** Shows how many orders were created on the platform. This helps measure total platform activity.
-- **Commission revenue:** Shows the platform revenue from the 15% commission on simulated orders.
-- **Conversion rate:** Measures how many website visitors become customers by placing orders.
-- **Average order value:** Shows the average money spent per order. This helps evaluate customer spending behavior.
-- **Website visitors:** Tracks the number of users browsing the restaurant pages.
-- **Checkout starts:** Shows how many users begin the checkout process.
-- **Customer retention indicators:** Rewards, cashback balance, and order history can help understand repeat customer behavior.
-
-These KPIs help the business understand whether users are browsing, adding items, completing orders, and generating revenue.
-
-## 7. Innovation and Future Development
-
-TiranaEats could improve by adding emerging technologies such as AI-based restaurant recommendations, personalized offers, chatbot customer support, smart delivery time prediction, and AI menu search based on dietary preferences.
-
-Future improvements could include:
-
-- Real payment gateway integration.
-- Real database instead of JSON/in-memory data.
-- Live GPS courier tracking.
-- Mobile app version for iOS and Android.
-- Restaurant self-service tools for menus, prices, availability, and promotions.
-- Customer loyalty levels and personalized discounts.
-- AI suggestions for meals based on budget, calories, previous orders, and time of day.
-- Multi-language support for Albanian and English.
-
-The platform could scale by adding more restaurants, expanding outside Tirana, improving delivery logistics, using cloud hosting, and creating stronger partnerships with local food businesses. To compete, TiranaEats should focus on fast delivery, strong local restaurant coverage, reliable customer service, simple design, and attractive rewards.
+No database is required. New users and orders are stored in memory while the server is running.
